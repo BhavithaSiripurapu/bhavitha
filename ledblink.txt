@@ -1,0 +1,14 @@
+#include "Arduino.h"
+
+#define LED_PIN 2  // GPIO pin where the LED is connected
+
+void setup() {
+  pinMode(LED_PIN, OUTPUT);  // Set the LED pin as an output
+}
+
+void loop() {
+  digitalWrite(LED_PIN, HIGH);  // Turn the LED on
+  delay(1000);                  // Wait for a second (1000 milliseconds)
+  digitalWrite(LED_PIN, LOW);   // Turn the LED off
+  delay(1000);
+  }                // Wait for a second
