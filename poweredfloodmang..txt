@@ -1,0 +1,55 @@
+// Define the pins for the ultrasonic sensor and LEDs
+const int trigPin = 12;
+const int echoPin = 13;
+const int redLedPin = 14;
+const int greenLedPin = 15;
+
+// Define the water level thresholds
+const int lowThreshold = 10; // in centimeters
+const int highThreshold = 20; // in centimeters
+
+void setup() {
+  // Set the pin modes
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(redLedPin, OUTPUT);
+  pinMode(greenLedPin, OUTPUT);
+
+  // Initialize the serial communication
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Measure the distance using the ultrasonic sensor
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  long duration = pulseIn(echoPin, HIGH);
+  int distance = duration * 0.034 / 2; // Distance in centimeters
+
+  // Check the water level and control the LEDs
+  if (distance < lowThreshold) {
+    // Water level is low, turn on the green LED
+    digitalWrite(greenLedPin, HIGH);
+    digitalWrite(redLedPin, LOW);
+  } else if (distance > highThreshold) {
+    // Water level is high, turn on the red LED
+    digitalWrite(redLedPin, HIGH);
+    digitalWrite(greenLedPin, LOW);
+  } else {
+    // Water level is within the normal range, turn off both LEDs
+    digitalWrite(redLedPin, LOW);
+    digitalWrite(greenLedPin, LOW);
+  }
+
+  // Print the water level to the serial monitor
+  Serial.print("Water level: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  // Wait for a short period before the next measurement
+  delay(1000);
+}
